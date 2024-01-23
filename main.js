@@ -30,7 +30,7 @@ boton.addEventListener("click",function(){
             <p>Máxima: ${datos.main.temp_max.toFixed(1)} °</p>
             <p>Presión: ${datos.main.pressure.toFixed(1)} Hpa</p>
             <p>Humedad: ${datos.main.humidity.toFixed(1)} %</p>
-
+            <button id="extendido"> Ver pronostico extendido </button>
         </div> `
         
         const fondodiv = document.getElementById("body")
@@ -60,14 +60,79 @@ boton.addEventListener("click",function(){
             fondodiv.style.backgroundPosition = "center"
         }
         container.appendChild(api)
-        body.appendChild(container)    
+        body.appendChild(container)
+        let extendido=document.getElementById("extendido")
+    extendido.addEventListener("click",function(){
+        let apikey="ee363454df1addd6cc6bb954f18065ef"
+        body.innerHTML=""
+        urlext=`https://api.openweathermap.org/data/2.5/forecast?q=${ciudad}&appid=${apikey}&units=metric&lang=es`
+        fetch(urlext)
+        .then(response=>response.json())
+        .then(datosext=>{
+            const fecha1=new Date(datosext.list[0].dt_txt)
+            const fecha2=new Date(datosext.list[8].dt_txt)
+            const fecha3=new Date(datosext.list[16].dt_txt)
+            const fecha4=new Date(datosext.list[24].dt_txt)
+            const fecha5=new Date(datosext.list[32].dt_txt)
+            const diasSemana=["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"]
+            const dia1=diasSemana[fecha1.getUTCDay()]
+            const dia2=diasSemana[fecha2.getUTCDay()]
+            const dia3=diasSemana[fecha3.getUTCDay()]
+            const dia4=diasSemana[fecha4.getUTCDay()]
+            const dia5=diasSemana[fecha5.getUTCDay()]
+
+            let apiext=document.createElement("div")
+            apiext.innerHTML=`<div id="extendido">
+            <p>${dia1}</p>
+            <p>Temperatura:${datosext.list[0].main.temp.toFixed(0)}°</p>
+            <p>Máxima:${datosext.list[0].main.temp_max.toFixed(0)}°</p>
+            <p>Mínima:${datosext.list[0].main.temp_min.toFixed(0)}°</p>
+            <p>Térmica:${datosext.list[0].main.feels_like.toFixed(0)}°</p>
+            </div>
+            <div id="extendido">
+            <p>${dia2}</p>
+            <p>Temperatura:${datosext.list[8].main.temp.toFixed(0)}°</p>
+            <p>Máxima:${datosext.list[8].main.temp_max.toFixed(0)}°</p>
+            <p>Mínima:${datosext.list[8].main.temp_min.toFixed(0)}°</p>
+            <p>Térmica:${datosext.list[8].main.feels_like.toFixed(0)}°</p>
+            </div>
+            <div id="extendido">
+            <p>${dia3}</p>
+            <p>Temperatura:${datosext.list[16].main.temp.toFixed(0)}°</p>
+            <p>Máxima:${datosext.list[16].main.temp_max.toFixed(0)}°</p>
+            <p>Mínima:${datosext.list[16].main.temp_min.toFixed(0)}°</p>
+            <p>Térmica:${datosext.list[16].main.feels_like.toFixed(0)}°</p>
+            </div>
+            <div id="extendido">
+            <p>${dia4}</p>
+            <p>Temperatura:${datosext.list[24].main.temp.toFixed(0)}°</p>
+            <p>Máxima:${datosext.list[24].main.temp_max.toFixed(0)}°</p>
+            <p>Mínima:${datosext.list[24].main.temp_min.toFixed(0)}°</p>
+            <p>Térmica:${datosext.list[24].main.feels_like.toFixed(0)}°</p>
+            </div>
+            <div id="extendido">
+            <p>${dia5}</p>
+            <p>Temperatura:${datosext.list[32].main.temp.toFixed(0)}°</p>
+            <p>Máxima:${datosext.list[32].main.temp_max.toFixed(0)}°</p>
+            <p>Mínima:${datosext.list[32].main.temp_min.toFixed(0)}°</p>
+            <p>Térmica:${datosext.list[32].main.feels_like.toFixed(0)}°</p>
+            </div>`
+            body.appendChild(apiext)
+        })
+        
     })    
+    })
+
     const botonvolver=document.createElement("button")
     botonvolver.innerHTML=`Volver al inicio`
     botonvolver.addEventListener("click",()=>{
         window.location.href = document.referrer
     })
+    
+    
     body.appendChild(botonvolver)
+    
+    
 }
 })
 
