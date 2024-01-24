@@ -1,4 +1,4 @@
-rutaLlovizna="climas/llovizna.avif"
+rutaNiebla="climas/nieblajpg.webp"
 rutaNublado="climas/nublado.jpeg"
 rutaSol="climas/soleado.avif"
 rutaTormenta="climas/tormenta.webp"
@@ -10,6 +10,20 @@ boton.addEventListener("click",function(){
     let apikey="ee363454df1addd6cc6bb954f18065ef"
     let container= document.getElementById("climacontainer")
     let ciudad= document.getElementById("ciudad").value
+    
+    
+    if(localStorage.length=== 0){
+        const lista=[]
+        lista.push(ciudad)
+        localStorage.setItem("historial",JSON.stringify(lista))
+        
+    }else{
+        const historial=JSON.parse(localStorage.getItem("historial"))
+        historial.push(ciudad)
+        localStorage.setItem("historial", JSON.stringify(historial))
+    }
+
+
     if (ciudad===""){
         alert("Debes escribir una ciudad")
     }else{
@@ -42,12 +56,12 @@ boton.addEventListener("click",function(){
             fondodiv.style.backgroundImage = `url('${rutaSol}')`;
             fondodiv.style.backgroundSize = "cover";
             fondodiv.style.backgroundPosition = "center"
-        }else if(datos.weather[0].main==="Rain"){
+        }else if(datos.weather[0].main==="Rain" || datos.weather[0].main==="Drizzle"){
             fondodiv.style.backgroundImage = `url('${rutaLluvia}')`;
             fondodiv.style.backgroundSize = "cover";
             fondodiv.style.backgroundPosition = "center"
-        }else if(datos.weather[0].main==="Drizzle"){
-            fondodiv.style.backgroundImage = `url('${rutaLlovizna}')`;
+        }else if(datos.weather[0].main==="Mist" || datos.weather[0].main==="Fog" || datos.weather[0].main==="Smoke"){
+            fondodiv.style.backgroundImage = `url('${rutaNiebla}')`;
             fondodiv.style.backgroundSize = "cover";
             fondodiv.style.backgroundPosition = "center"
         }else if(datos.weather[0].main==="Thunderstorm"){
@@ -118,6 +132,12 @@ boton.addEventListener("click",function(){
             <p>Térmica:${datosext.list[32].main.feels_like.toFixed(0)}°</p>
             </div>`
             body.appendChild(apiext)
+            const botonvolver=document.createElement("button")
+            botonvolver.innerHTML=`Volver al inicio`
+            botonvolver.addEventListener("click",()=>{
+                window.location.href = document.referrer
+            })
+            body.appendChild(botonvolver)
         })
         
     })    
@@ -135,6 +155,24 @@ boton.addEventListener("click",function(){
     
 }
 })
+
+let historial = localStorage.getItem("historial");
+const botonn=document.getElementById("historial")
+botonn.addEventListener("click",function(){
+        const body = document.getElementById("body");
+    if (historial && historial.length > 0) {
+        let hist = document.createElement("ul");
+        hist.innerHTML = `<h1>HISTORIAL (Últimos 5 buscados): </h1>
+        <p>${historial}</p>
+        `;
+        body.appendChild(hist)
+    } else {
+        Swal.fire("No hay nada en el historial");
+    }
+    
+})
+
+
 
 
 
