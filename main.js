@@ -22,6 +22,7 @@ boton.addEventListener("click",function(){
         historial.push(ciudad)
         localStorage.setItem("historial", JSON.stringify(historial))
     }
+    
 
 
     if (ciudad===""){
@@ -173,6 +174,8 @@ botonn.addEventListener("click",function(){
 })
 
 
-
+/*
+Mañana tengo que agregar una lista desplegable de paises y luego de las ciudades que hay en ese pais
+*/
 
 
