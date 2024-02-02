@@ -45,7 +45,7 @@ boton.addEventListener("click",function(){
             <p>Máxima: ${datos.main.temp_max.toFixed(1)} °</p>
             <p>Presión: ${datos.main.pressure.toFixed(1)} Hpa</p>
             <p>Humedad: ${datos.main.humidity.toFixed(1)} %</p>
-            <button id="extendido"> Ver pronostico extendido </button>
+            <button class="estilos" id="extendido"> Ver pronostico extendido </button>
         </div> `
         
         const fondodiv = document.getElementById("body")
@@ -77,6 +77,7 @@ boton.addEventListener("click",function(){
         container.appendChild(api)
         body.appendChild(container)
         let extendido=document.getElementById("extendido")
+        
     extendido.addEventListener("click",function(){
         let apikey="ee363454df1addd6cc6bb954f18065ef"
         body.innerHTML=""
@@ -89,51 +90,57 @@ boton.addEventListener("click",function(){
             const fecha3=new Date(datosext.list[16].dt_txt)
             const fecha4=new Date(datosext.list[24].dt_txt)
             const fecha5=new Date(datosext.list[32].dt_txt)
+            
             const diasSemana=["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"]
             const dia1=diasSemana[fecha1.getUTCDay()]
             const dia2=diasSemana[fecha2.getUTCDay()]
             const dia3=diasSemana[fecha3.getUTCDay()]
             const dia4=diasSemana[fecha4.getUTCDay()]
             const dia5=diasSemana[fecha5.getUTCDay()]
+            
+
 
             let apiext=document.createElement("div")
-            apiext.innerHTML=`<div id="extendido">
-            <p>${dia1}</p>
-            <p>Temperatura:${datosext.list[0].main.temp.toFixed(0)}°</p>
+            apiext.innerHTML=`
+            <div class="contenedor">
+            <div id="extendido">
+            <p id="Dia">${dia1}</p>
+            
             <p>Máxima:${datosext.list[0].main.temp_max.toFixed(0)}°</p>
             <p>Mínima:${datosext.list[0].main.temp_min.toFixed(0)}°</p>
             <p>Térmica:${datosext.list[0].main.feels_like.toFixed(0)}°</p>
             </div>
             <div id="extendido">
-            <p>${dia2}</p>
-            <p>Temperatura:${datosext.list[8].main.temp.toFixed(0)}°</p>
-            <p>Máxima:${datosext.list[8].main.temp_max.toFixed(0)}°</p>
+            <p id="Dia">${dia2}</p>
+                        <p>Máxima:${datosext.list[8].main.temp_max.toFixed(0)}°</p>
             <p>Mínima:${datosext.list[8].main.temp_min.toFixed(0)}°</p>
             <p>Térmica:${datosext.list[8].main.feels_like.toFixed(0)}°</p>
             </div>
             <div id="extendido">
-            <p>${dia3}</p>
-            <p>Temperatura:${datosext.list[16].main.temp.toFixed(0)}°</p>
+            <p id="Dia">${dia3}</p>
+            
             <p>Máxima:${datosext.list[16].main.temp_max.toFixed(0)}°</p>
             <p>Mínima:${datosext.list[16].main.temp_min.toFixed(0)}°</p>
             <p>Térmica:${datosext.list[16].main.feels_like.toFixed(0)}°</p>
             </div>
             <div id="extendido">
-            <p>${dia4}</p>
-            <p>Temperatura:${datosext.list[24].main.temp.toFixed(0)}°</p>
+            <p id="Dia">${dia4}</p>
+            
             <p>Máxima:${datosext.list[24].main.temp_max.toFixed(0)}°</p>
             <p>Mínima:${datosext.list[24].main.temp_min.toFixed(0)}°</p>
             <p>Térmica:${datosext.list[24].main.feels_like.toFixed(0)}°</p>
             </div>
             <div id="extendido">
-            <p>${dia5}</p>
-            <p>Temperatura:${datosext.list[32].main.temp.toFixed(0)}°</p>
+            <p id="Dia">${dia5}</p>
+            
             <p>Máxima:${datosext.list[32].main.temp_max.toFixed(0)}°</p>
             <p>Mínima:${datosext.list[32].main.temp_min.toFixed(0)}°</p>
             <p>Térmica:${datosext.list[32].main.feels_like.toFixed(0)}°</p>
+            </div>
             </div>`
             body.appendChild(apiext)
             const botonvolver=document.createElement("button")
+            botonvolver.classList.add("estilos")
             botonvolver.innerHTML=`Volver al inicio`
             botonvolver.addEventListener("click",()=>{
                 window.location.href = document.referrer
@@ -145,6 +152,7 @@ boton.addEventListener("click",function(){
     })
 
     const botonvolver=document.createElement("button")
+    botonvolver.classList.add("estilos")
     botonvolver.innerHTML=`Volver al inicio`
     botonvolver.addEventListener("click",()=>{
         window.location.href = document.referrer
@@ -160,22 +168,35 @@ boton.addEventListener("click",function(){
 let historial = localStorage.getItem("historial");
 const botonn=document.getElementById("historial")
 botonn.addEventListener("click",function(){
+        let historialArray=JSON.parse(historial)
         const body = document.getElementById("body");
-    if (historial && historial.length > 0) {
-        let hist = document.createElement("ul");
-        hist.innerHTML = `<h1>HISTORIAL (Últimos 5 buscados): </h1>
-        <p>${historial}</p>
-        `;
-        body.appendChild(hist)
-    } else {
-        Swal.fire("No hay nada en el historial");
-    }
-    
+        if (historialArray.length > 0){
+            let historialList= document.createElement("ul")
+            historialList.id="lista"
+            historialArray.forEach(function(x){
+            let listItem=document.createElement("div")
+            listItem.classList.add("ultimos")
+            listItem.innerHTML=`<p>${x}</p>`
+            historialList.appendChild(listItem)
+            })
+            
+            body.appendChild(historialList)
+        }else{
+            alert("No hay nada en el historial")
+        }
+        botonn.disabled=true
+        let botonhist=document.querySelectorAll('.ultimos')
+        botonhist.forEach(boton=>{
+            boton.addEventListener("click",function(){
+                alert("negro")
+            })
+    })   
 })
 
 
-/*
-Mañana tengo que agregar una lista desplegable de paises y luego de las ciudades que hay en ese pais
-*/
+
+
+
+
 
 
