@@ -5,6 +5,8 @@ rutaTormenta="climas/tormenta.webp"
 rutaLluvia="climas/lluvia.avif"
 rutaNieve="climas/nevado.jpg"
 
+
+
 let boton= document.getElementById("botonsubir")
 boton.addEventListener("click",function(){
     let apikey="ee363454df1addd6cc6bb954f18065ef"
@@ -165,18 +167,19 @@ boton.addEventListener("click",function(){
 }
 })
 
+
 let historial = localStorage.getItem("historial");
 const botonn=document.getElementById("historial")
 botonn.addEventListener("click",function(){
         let historialArray=JSON.parse(historial)
         const body = document.getElementById("body");
-        if (historialArray.length > 0){
+        if (historialArray.length > 0 && historial.length > 0 ){
             let historialList= document.createElement("ul")
             historialList.id="lista"
             historialArray.forEach(function(x){
             let listItem=document.createElement("div")
             listItem.classList.add("ultimos")
-            listItem.innerHTML=`<p>${x}</p>`
+            listItem.innerHTML=`<p id="item">${x}</p>`
             historialList.appendChild(listItem)
             })
             
@@ -187,8 +190,9 @@ botonn.addEventListener("click",function(){
         botonn.disabled=true
         let botonhist=document.querySelectorAll('.ultimos')
         botonhist.forEach(boton=>{
-            boton.addEventListener("click",function(){
-                alert("negro")
+            boton.addEventListener("click",function(event){
+                let ciudad=event.target.textContent.trim()
+                window.location.href=`https://www.google.com/search?q=${ciudad}&sca_esv=82c0f5fcf9e8a56e&sxsrf=ACQVn08khJ4qVl1lA4h3rx6ZvgWsbestEg%3A1706911724524&source=hp&ei=7Ge9ZaPqHdrL1sQPo9yQqAQ&iflsig=ANes7DEAAAAAZb11_P5T1VLlRV-dKZsrR0B-J_iZaWNX&ved=0ahUKEwijkIHY1Y2EAxXapZUCHSMuBEUQ4dUDCA0&uact=5&oq=detroit&gs_lp=Egdnd3Mtd2l6IgdkZXRyb2l0MggQLhixAxiABDIIEC4YgAQYsQMyCBAuGLEDGIAEMggQLhiABBixAzIFEAAYgAQyBRAAGIAEMgUQABiABDIFEAAYgAQyBRAAGIAEMgUQABiABEiKClAAWO8GcAB4AJABAJgB6wGgAbwIqgEFMC42LjG4AQPIAQD4AQHCAgQQIxgnwgIKECMYgAQYigUYJ8ICCBAAGIAEGLEDwgIREC4YgAQYsQMYgwEYxwEY0QPCAgsQABiABBixAxiDAcICDhAuGIAEGLEDGMcBGNEDwgIEEAAYA8ICDRAAGIAEGLEDGEYY-QHCAgUQLhiABA&sclient=gws-wiz`
             })
     })   
 })
