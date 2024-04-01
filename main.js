@@ -20,8 +20,10 @@ boton.addEventListener("click",function(){
         localStorage.setItem("historial",JSON.stringify(lista))
         
     }else{
-        const historial=JSON.parse(localStorage.getItem("historial"))
-        historial.push(ciudad)
+        if (historial === null || historial === undefined) {
+            historial = []; // Inicializa historial como un array vacío si no existe en localStorage
+        }
+        historial.push(ciudad); // Agrega la ciudad al array historial
         localStorage.setItem("historial", JSON.stringify(historial))
     }
     
@@ -169,6 +171,9 @@ boton.addEventListener("click",function(){
 
 
 let historial = localStorage.getItem("historial");
+if (historial !== null){
+
+
 const botonn=document.getElementById("historial")
 botonn.addEventListener("click",function(){
         let historialArray=JSON.parse(historial)
@@ -197,7 +202,7 @@ botonn.addEventListener("click",function(){
     })   
 })
 
-
+}
 
 
 
